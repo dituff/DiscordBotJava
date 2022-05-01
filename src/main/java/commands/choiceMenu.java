@@ -1,50 +1,91 @@
 package commands;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.Emoji;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
+import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+
 
 public class choiceMenu extends ListenerAdapter {
-    public void onMessageReceived(MessageReceivedEvent event) {
-        String messageSent = event.getMessage().getContentRaw();
-        if (messageSent.equalsIgnoreCase("setup")) {
-            event.getChannel().sendMessage("Выбери пункты меню")
-                    .setActionRows(ActionRow.of(selectSetups()), ActionRow.of(selectWeeks()))
-                    .queue();
+    /*    public void onMessageReceived(MessageReceivedEvent event) {
+            String messageSent = event.getMessage().getContentRaw();
+            if (messageSent.equalsIgnoreCase("setup")) {
+                event.getChannel().sendMessage("Выбери пункты меню")
+                        .setActionRow(onSlashCommandInteraction()).queue();
 
+            }
+        }
+
+
+       private static SelectMenu selectSetups() {
+             return SelectMenu.create("race_series")
+                    .setPlaceholder("Выбери гоночную серию")
+                    .addOption("VRS", "vrs", "VRS_Sprint")
+                    .addOption("IMSA", "imsa", "IMSA_Sprint")
+                    .addOption("VRS_E", "vrs_e", "VRS_Endurance")
+                    .addOption("IMSA_E", "imsa_e", "IMSA_Endurance")
+                    .build();
+        }
+        private static SelectMenu selectWeeks(){
+            return SelectMenu.create("race_week")
+                    .setPlaceholder("Выбери неделю")
+                    .addOption("week_1","week1","Первая неделя")
+                    .addOption("week_2","week2","Вторая неделя")
+                    .addOption("week_3","week3","Третья неделя")
+                    .addOption("week_4","week4","Четвертая неделя")
+                    .addOption("week_5","week5","Пятая неделя")
+                    .addOption("week_6","week6","Шестая неделя")
+                    .addOption("week_7","week7","Сельмая неделя")
+                    .addOption("week_8","week8","Восьмая неделя")
+                    .addOption("week_9","week9","Девятая неделя")
+                    .addOption("week_10","week10","Десятая неделя")
+                    .addOption("week_11","week11","Одиннадцатая неделя")
+                    .addOption("week_12","week12","Двенадцатая неделя")
+                    .build();
+
+
+
+        @Override
+        public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+            if (event.getName().equals("setup")) {
+                event.reply("Выбери нужные варианты меню")
+                        .addActionRow(
+                                SelectMenu.create("Выбери гоночную серию")
+                                        .addOption("VRS", "vrs", "VRS_Sprint")
+                                        .addOption("IMSA", "imsa", "IMSA_Sprint")
+                                        .addOption("VRS_E", "vrs_e", "VRS_Endurance")
+                                        .addOption("IMSA_E", "imsa_e", "IMSA_Endurance")
+                                        .build())
+                        .queue();
+
+            }
+        }*/
+
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        if (event.getName().equals("food")) {
+            event.reply("Choose your favorite food")
+                    .addActionRow(
+                            SelectMenu.create("choose-food")
+                                    .addOption("Pizza", "pizza", "Classic") // SelectOption with only the label, value, and description
+                                    .addOptions(SelectOption.of("Hamburger", "hamburger") // another way to create a SelectOption
+                                            .withDescription("Tasty") // this time with a description
+                                            .withEmoji(Emoji.fromUnicode("\uD83C\uDF54")) // and an emoji
+                                            .withDefault(true)) // while also being the default option
+                                    .build())
+                    .queue();
         }
     }
 
 
-    private static SelectMenu selectSetups() {
-         return SelectMenu.create("race_series")
-                .setPlaceholder("Выбери гоночную серию")
-                .addOption("VRS", "vrs", "VRS_Sprint")
-                .addOption("IMSA", "imsa", "IMSA_Sprint")
-                .addOption("VRS_E", "vrs_e", "VRS_Endurance")
-                .addOption("IMSA_E", "imsa_e", "IMSA_Endurance")
-                .build();
-    }
-    private static SelectMenu selectWeeks(){
-        return SelectMenu.create("race_week")
-                .setPlaceholder("Выбери неделю")
-                .addOption("week_1","week1","Первая неделя")
-                .addOption("week_2","week2","Вторая неделя")
-                .addOption("week_3","week3","Третья неделя")
-                .addOption("week_4","week4","Четвертая неделя")
-                .addOption("week_5","week5","Пятая неделя")
-                .addOption("week_6","week6","Шестая неделя")
-                .addOption("week_7","week7","Сельмая неделя")
-                .addOption("week_8","week8","Восьмая неделя")
-                .addOption("week_9","week9","Девятая неделя")
-                .addOption("week_10","week10","Десятая неделя")
-                .addOption("week_11","week11","Одиннадцатая неделя")
-                .addOption("week_12","week12","Двенадцатая неделя")
-                .build();
-
+    public void onSelectMenuInteraction(SelectMenuInteractionEvent event) {
+        if (event.getComponentId().equals("choose-food")) {
+            event.reply("You chose " + event.getValues().get(0)).queue();
+        }
     }
 }
+
 
 
 
