@@ -7,10 +7,11 @@ import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 
 
+
 public class choiceMenu extends ListenerAdapter {
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if (event.getName().equals("setup")) {
-            event.reply("Выбери нужные варианты меню")
+            event.reply("Выбери нужные варианты меню") // Проблемы с этой частью , дает выбрать только одно меню а не все и после этого отправить запрос.
                     .addActionRows(ActionRow.of(
                                     SelectMenu.create("race")
                                             .setPlaceholder("Выбери гоночную серию")
@@ -33,7 +34,7 @@ public class choiceMenu extends ListenerAdapter {
                                             .addOption("week_10", "week10", "Десятая неделя")
                                             .addOption("week_11", "week11", "Одиннадцатая неделя")
                                             .addOption("week_12", "week12", "Двенадцатая неделя")
-                                            .build()).asDisabled(),
+                                            .build()),
                             ActionRow.of(
                                     SelectMenu.create("cars")
                                             .setPlaceholder("Выбери Автомобиль")
@@ -46,15 +47,15 @@ public class choiceMenu extends ListenerAdapter {
                                             .addOption("Porsche911R", "911rgt3", "Porsche911rgt3")
                                             .addOption("Ford", "ford", "Fordgt_gt3")
                                             .addOption("DallaraP217", "p217", "DallaraP217")
-                                            .build()).asDisabled()
+                                            .build())
             ).queue();
         }
     }
-//    public void onSelectMenuInteraction(SelectMenuInteractionEvent event) {
-  //      if(event.()){
-    //        event.reply("choice" + event.getSelectedOptions().get(0)).queue();
-     //   }
-   // }
+    public void onSelectMenuInteraction(SelectMenuInteractionEvent event) {
+        if(event.getComponentId().equals("race")){      // Проблемы с этой частью , отвечает только на 1 меню выбора.
+            event.reply("choice " + event.getValues().get(0)).queue();
+        }
+    }
 }
 
 
